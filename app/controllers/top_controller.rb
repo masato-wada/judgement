@@ -4,4 +4,5 @@ class TopController < ApplicationController
     render "index"
   end
 
+
 end
