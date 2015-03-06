@@ -1,0 +1,14 @@
+<%= simple_form_for @question, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.input :title %>
+  <%= error_span(@question[:title]) %>
+  <%= f.input :desc %>
+  <%= error_span(@question[:desc]) %>
+  <%= f.input :limit_at %>
+  <%= error_span(@question[:limit_at]) %>
+  <%= f.input :del_flg %>
+  <%= error_span(@question[:del_flg]) %>
+
+  <%= f.button :submit, :class => 'btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                questions_path, :class => 'btn btn-default' %>
+<% end %>

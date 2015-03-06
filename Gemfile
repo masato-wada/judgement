@@ -45,3 +45,11 @@ end
 
 #add
 gem 'mysql2'
+gem 'responders', '~>2.0'
+gem 'therubyracer'
+
+#add of design
+gem 'simple_form'
+gem 'therubyracer'
+gem 'less-rails'
+gem 'twitter-bootstrap-rails'
