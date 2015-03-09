@@ -47,6 +47,7 @@ end
 gem 'mysql2'
 gem 'responders', '~>2.0'
 gem 'therubyracer'
+gem 'foreigner'
 
 #add of design
 gem 'simple_form'

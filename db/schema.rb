@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20150305095843) do
     t.string   "title",      limit: 256,               null: false
     t.text     "desc",       limit: 65535
     t.datetime "limit_at"
-    t.integer  "del_flg",    limit: 2,     default: 0, null: false
+    t.integer  "delete_flg",    limit: 2,     default: 0, null: false
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
   end

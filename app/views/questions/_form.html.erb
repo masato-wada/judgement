@@ -5,8 +5,8 @@
   <%= error_span(@question[:desc]) %>
   <%= f.input :limit_at %>
   <%= error_span(@question[:limit_at]) %>
-  <%= f.input :del_flg %>
-  <%= error_span(@question[:del_flg]) %>
+  <%= f.input :delete_flg %>
+  <%= error_span(@question[:delete_flg]) %>
 
   <%= f.button :submit, :class => 'btn-primary' %>
   <%= link_to t('.cancel', :default => t("helpers.links.cancel")),

@@ -1,0 +1,14 @@
+<%= simple_form_for @select, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.input :question_id %>
+  <%= error_span(@select[:question_id]) %>
+  <%= f.input :desc %>
+  <%= error_span(@select[:desc]) %>
+  <%= f.input :active_flg %>
+  <%= error_span(@select[:active_flg]) %>
+  <%= f.input :delete_flg %>
+  <%= error_span(@select[:delete_flg]) %>
+
+  <%= f.button :submit, :class => 'btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                selects_path, :class => 'btn btn-default' %>
+<% end %>

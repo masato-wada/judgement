@@ -4,7 +4,7 @@ class CreateQuestions < ActiveRecord::Migration
       t.string :title, :null => false, :limit => 256
       t.text :desc
       t.datetime :limit_at
-      t.integer :del_flg, :limit => 2, :default => 0, :null => false
+      t.integer :delete_flg, :limit => 2, :default => 0, :null => false
 
       t.timestamps null: false
     end
