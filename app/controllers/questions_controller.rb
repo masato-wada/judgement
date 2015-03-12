@@ -15,6 +15,12 @@ class QuestionsController < ApplicationController
   # GET /questions/new
   def new
     @question = Question.new
+
+    # 1questionで最大4select追加出来る
+    # ☆☆☆最大は増やす予定☆☆☆
+    4.times {
+        @question.selects.build
+    }
   end
 
   # GET /questions/1/edit
@@ -41,7 +47,7 @@ class QuestionsController < ApplicationController
   # PATCH/PUT /questions/1.json
   def update
     respond_to do |format|
-      if @question.update(question_params)
+      if @question.update_attributes(question_params)
         format.html { redirect_to @question, notice: 'Question was successfully updated.' }
         format.json { render :show, status: :ok, location: @question }
       else
@@ -69,6 +75,11 @@ class QuestionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def question_params
-      params.require(:question).permit(:title, :desc, :limit_at, :delete_flg)
+      params[:question][:selects_attributes].each do |key,select|
+        if action_name == 'create' && select[:desc] == '' && key.to_i >= 2 then
+          params[:question][:selects_attributes].delete(key)
+        end
+      end
+      params.require(:question).permit(:title, :desc, :limit_at, :delete_flg, selects_attributes: [:id, :desc])
     end
 end

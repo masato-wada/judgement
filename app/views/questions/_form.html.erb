@@ -1,12 +1,17 @@
 <%= simple_form_for @question, :html => { :class => 'form-horizontal' } do |f| %>
-  <%= f.input :title %>
+
+  <%= f.input :title, label: 'アンケート/質問' %>
   <%= error_span(@question[:title]) %>
-  <%= f.input :desc %>
+  <%= f.input :desc, label: '説明' %>
   <%= error_span(@question[:desc]) %>
-  <%= f.input :limit_at %>
+  <%= f.input :limit_at, label: '投票期限' %>
   <%= error_span(@question[:limit_at]) %>
-  <%= f.input :delete_flg %>
-  <%= error_span(@question[:delete_flg]) %>
+
+  <% @question.selects.each do |select| %>
+    <%= f.fields_for :selects, select do |select_field| %>
+      <%= select_field.input :desc, label: '選択肢' %>
+    <% end %>
+  <% end %>
 
   <%= f.button :submit, :class => 'btn-primary' %>
   <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
