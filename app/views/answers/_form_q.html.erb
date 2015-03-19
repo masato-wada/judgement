@@ -1,0 +1,12 @@
+<%= simple_form_for @answer, :html => { :class => 'form-horizontal' } do |f| %>
+
+  <% @selects.each do |select| %>
+    <%= f.fields_for :answers, @answer do |answer_field| %>
+      <%= f.radio_button :select_id, select.id %><%= select.desc %>
+      <%= f.hidden_field :question_id, :value => select.question_id %>
+      <%= error_span(@answer[:select_id]) %>
+    <% end %>
+  <% end %>
+
+  <%= f.button :submit, :class => 'btn-primary' %>
+<% end %>

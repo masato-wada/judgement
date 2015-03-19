@@ -1,18 +1,25 @@
 class QuestionsController < ApplicationController
-  before_action :set_question, only: [:show, :edit, :update, :destroy]
+  before_action :set_question, only: [:show, :result, :edit, :update, :destroy]
 
-  # GET /questions
-  # GET /questions.json
   def index
-    @questions = Question.all
+    @questions = Question.where(delete_flg: 0)
   end
 
-  # GET /questions/1
-  # GET /questions/1.json
   def show
+    check_delete_flg
+    @selects = Select.where(question_id: params[:id], active_flg: 1, delete_flg: 0)
+    @answer = Answer.new
   end
 
-  # GET /questions/new
+  def result
+    check_delete_flg
+    @selects = Select.where(question_id: params[:id], active_flg: 1, delete_flg: 0)
+    @result = Hash::new
+    @selects.each do |select|
+      @result[select.id.to_i] = Answer.where(select_id: select.id, active_flg: 1, delete_flg: 0).count
+    end
+  end
+
   def new
     @question = Question.new
 
@@ -25,6 +32,7 @@ class QuestionsController < ApplicationController
 
   # GET /questions/1/edit
   def edit
+    check_delete_flg
   end
 
   # POST /questions
@@ -46,6 +54,7 @@ class QuestionsController < ApplicationController
   # PATCH/PUT /questions/1
   # PATCH/PUT /questions/1.json
   def update
+    check_delete_flg
     respond_to do |format|
       if @question.update_attributes(question_params)
         format.html { redirect_to @question, notice: 'Question was successfully updated.' }
@@ -81,5 +90,11 @@ class QuestionsController < ApplicationController
         end
       end
       params.require(:question).permit(:title, :desc, :limit_at, :delete_flg, selects_attributes: [:id, :desc])
+    end
+
+    def check_delete_flg
+      if @question[:delete_flg] == 1 then
+        redirect_to controller: 'errors', action: 'error_404'
+      end
     end
 end

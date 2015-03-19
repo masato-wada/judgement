@@ -10,10 +10,11 @@
   <dd><%= @question.desc %></dd>
   <dt><strong><%= model_class.human_attribute_name(:limit_at) %>:</strong></dt>
   <dd><%= @question.limit_at %></dd>
+  <% @selects.each do |select| %>
+    <dt><strong><%= select.desc %>:</strong></dt>
+    <dd><%= @result[select.id] %></dd>
+  <% end %>
 </dl>
-
-<%= render 'answers/form_q' %>
-<br />
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
               questions_path, :class => 'btn btn-default'  %>

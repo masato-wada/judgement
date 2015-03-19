@@ -1,11 +1,22 @@
 Rails.application.routes.draw do
 
-  resources :questions
+  resources :selects
+  resources :answers
 
 #  root 'top#index'
   scope :top do
     get '/', to: 'top#index', as: :top
   end
+
+  resources :questions
+  scope :questions do
+    get '/:id/result', to: 'questions#result', as: :result_question
+  end
+
+  scope :errors do
+    get '/error_404', to: 'errors#error_404', as: :error_404
+  end
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
