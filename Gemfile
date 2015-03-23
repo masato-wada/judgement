@@ -54,3 +54,6 @@ gem 'simple_form'
 gem 'therubyracer'
 gem 'less-rails'
 gem 'twitter-bootstrap-rails'
+
+#add of graph
+gem 'lazy_high_charts'

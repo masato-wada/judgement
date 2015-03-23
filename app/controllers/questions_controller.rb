@@ -15,8 +15,57 @@ class QuestionsController < ApplicationController
     check_delete_flg
     @selects = Select.where(question_id: params[:id], active_flg: 1, delete_flg: 0)
     @result = Hash::new
+    @info_graph_num = Array::new
+    @info_graph_desc = Array::new
+    @info_graph_pie = Array::new
     @selects.each do |select|
       @result[select.id.to_i] = Answer.where(select_id: select.id, active_flg: 1, delete_flg: 0).count
+      @info_graph_num.push(@result[select.id.to_i])
+      @info_graph_desc.push(select.desc.to_s)
+      _pie = Array::new
+      _pie = {:name => select.desc.to_s, :y => @result[select.id.to_i]}
+      @info_graph_pie.push(_pie)
+    end
+
+    @chart_pie = LazyHighCharts::HighChart.new('pie') do |f|
+      f.chart({
+        defaultSeriesType: 'pie',
+        margin: [30, 10, 10, 10]
+      })
+      f.series({
+        type: 'pie',
+        name: GraphMessages::LABELS,
+        tooltip: {
+          pointFormat: '<b>{point.percentage:.1f}%</b>'
+        },
+        data: @info_graph_pie
+      })
+      f.options[:title][:text] = GraphMessages::LABELS
+      f.legend(
+        layout: 'horizontal',
+        align: 'center',
+        # verticalAlign: 'under'
+      )
+      f.plot_options(
+        pie: {
+          allowPointSelect: true,
+          cursor: "pointer",
+          showInLegend: true,
+          dataLabels: {
+            enabled: false,
+            color: "black",
+            style: {
+              font: "13px Trebuchet MS, Verdana, sans-serif"
+            }
+          }
+        }
+      )
+    end
+
+    @chart_graph = LazyHighCharts::HighChart.new('graph') do |f|
+      f.title({:text => @question.title})
+      f.options[:xAxis][:categories] = @info_graph_desc
+      f.series(:type=> 'column', :name => GraphMessages::NUM, :data => @info_graph_num)
     end
   end
 
