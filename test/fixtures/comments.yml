@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  question_id: 
+  select_id: 
+  answer_id: 
+  comment: MyString
+  active_flg: 1
+  delete_flg: 1
+
+two:
+  question_id: 
+  select_id: 
+  answer_id: 
+  comment: MyString
+  active_flg: 1
+  delete_flg: 1

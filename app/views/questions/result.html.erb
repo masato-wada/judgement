@@ -19,6 +19,22 @@
 <%= high_chart("pie", @chart_pie) %>
 <%= high_chart("graph", @chart_graph)  %>
 
+<dl class="dl-horizontal">
+  <% @comments.each do |comment| %>
+    <dt><strong><%= (comment[:select_id])?(comment.select[:desc]):"" %>に投票</strong></dt>
+    <dd><%= comment[:created_at] %></dd>
+    <dd><%= comment[:comment] %></dd>
+  <% end %>
+</dl>
+
+<%= simple_form_for @comment, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.hidden_field :question_id, :value => @question.id %>
+  <%= f.input :comment %>
+  <%= error_span(@comment[:comment]) %>
+
+  <%= f.button :submit, :class => 'btn-primary' %>
+<% end %>
+
 <%= link_to t('.back', :default => t("helpers.links.back")),
               questions_path, :class => 'btn btn-default'  %>
 <%= link_to t('.edit', :default => t("helpers.links.edit")),

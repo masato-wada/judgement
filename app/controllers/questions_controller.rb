@@ -7,13 +7,17 @@ class QuestionsController < ApplicationController
 
   def show
     check_delete_flg
-    @selects = Select.where(question_id: params[:id], active_flg: 1, delete_flg: 0)
+    set_selects
     @answer = Answer.new
+    @answer.comments.build
   end
 
   def result
     check_delete_flg
-    @selects = Select.where(question_id: params[:id], active_flg: 1, delete_flg: 0)
+    set_selects
+    set_comments
+    @comment = Comment.new
+
     @result = Hash::new
     @info_graph_num = Array::new
     @info_graph_desc = Array::new
@@ -129,6 +133,16 @@ class QuestionsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_question
       @question = Question.find(params[:id])
+    end
+
+    # 質問に対する選択肢を取得
+    def set_selects
+      @selects = Select.where(question_id: params[:id], active_flg: 1, delete_flg: 0)
+    end
+
+    # 質問に対するコメントを取得
+    def set_comments
+      @comments = Comment.includes(:select).where(question_id: params[:id], active_flg: 1, delete_flg: 0).order(created_at: :DESC)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -1,0 +1,18 @@
+<%= simple_form_for @comment, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.input :question_id %>
+  <%= error_span(@comment[:question_id]) %>
+  <%= f.input :select_id %>
+  <%= error_span(@comment[:select_id]) %>
+  <%= f.input :answer_id %>
+  <%= error_span(@comment[:answer_id]) %>
+  <%= f.input :comment %>
+  <%= error_span(@comment[:comment]) %>
+  <%= f.input :active_flg %>
+  <%= error_span(@comment[:active_flg]) %>
+  <%= f.input :delete_flg %>
+  <%= error_span(@comment[:delete_flg]) %>
+
+  <%= f.button :submit, :class => 'btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                comments_path, :class => 'btn btn-default' %>
+<% end %>

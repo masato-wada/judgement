@@ -57,3 +57,8 @@ gem 'twitter-bootstrap-rails'
 
 #add of graph
 gem 'lazy_high_charts'
+
+#add of admin
+gem 'devise'
+gem 'cancancan'
+gem 'rails_admin'

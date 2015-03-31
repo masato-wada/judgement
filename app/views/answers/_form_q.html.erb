@@ -3,10 +3,15 @@
   <% @selects.each do |select| %>
     <%= f.fields_for :answers, @answer do |answer_field| %>
       <%= f.radio_button :select_id, select.id %><%= select.desc %>
-      <%= f.hidden_field :question_id, :value => select.question_id %>
       <%= error_span(@answer[:select_id]) %>
     <% end %>
   <% end %>
+  <%= f.hidden_field :question_id, :value => @question.id %>
+
+  <%= f.fields_for :comments, @answer.comments do |comment_field| %>
+    <%= comment_field.input :comment, label: 'コメント' %>
+  <% end %>
 
   <%= f.button :submit, :class => 'btn-primary' %>
+
 <% end %>

@@ -29,7 +29,6 @@ class AnswersController < ApplicationController
     respond_to do |format|
       if @answer.save
         if Rails.application.routes.recognize_path(request.referrer)[:controller] == 'questions' then
-          # format.html { redirect_to :controller => 'questions', :action => 'result', notice: 'Answer was successfully created.' }
           format.html { redirect_to :controller => 'questions', :action => 'result', :id => params[:answer][:question_id], notice: 'Answer was successfully created.' }
           format.json { render :show, status: :created, location: @question }
         else
@@ -75,6 +74,12 @@ class AnswersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def answer_params
-      params.require(:answer).permit(:question_id, :select_id, :active_flg, :delete_flg)
+      if params[:answer][:comments_attributes]['0'][:comment].blank? then
+        params.require(:answer).permit(:question_id, :select_id, :active_flg, :delete_flg)
+      else
+        params[:answer][:comments_attributes]['0'][:question_id] = params[:answer][:question_id]
+        params[:answer][:comments_attributes]['0'][:select_id] = params[:answer][:select_id]
+        params.require(:answer).permit(:question_id, :select_id, :active_flg, :delete_flg, comments_attributes: [:id, :question_id, :select_id, :comment])
+      end
     end
 end
