@@ -24,20 +24,28 @@ class AnswersController < ApplicationController
   # POST /answers
   # POST /answers.json
   def create
+    # cookie設定
+    set_cookie_answered_question
+
     @answer = Answer.new(answer_params)
 
-    respond_to do |format|
-      if @answer.save
-        if Rails.application.routes.recognize_path(request.referrer)[:controller] == 'questions' then
-          format.html { redirect_to :controller => 'questions', :action => 'result', :id => params[:answer][:question_id], notice: 'Answer was successfully created.' }
-          format.json { render :show, status: :created, location: @question }
+    # 回答済みかを確認、回答済みの場合resultページへ遷移
+    if @is_cookies.present? then
+      redirect_to :controller => 'questions', :action => 'result', :id => params[:answer][:question_id], notice: NoticeMessages::HAVE_ALREADY_ANSWERED
+    else
+      respond_to do |format|
+        if @answer.save
+          if Rails.application.routes.recognize_path(request.referrer)[:controller] == 'questions' then
+            format.html { redirect_to :controller => 'questions', :action => 'result', :id => params[:answer][:question_id], notice: 'Answer was successfully created.' }
+            format.json { render :show, status: :created, location: @question }
+          else
+            format.html { redirect_to @answer, notice: 'Answer was successfully created.' }
+            format.json { render :show, status: :created, location: @answer }
+          end
         else
-          format.html { redirect_to @answer, notice: 'Answer was successfully created.' }
-          format.json { render :show, status: :created, location: @answer }
+          format.html { render :new }
+          format.json { render json: @answer.errors, status: :unprocessable_entity }
         end
-      else
-        format.html { render :new }
-        format.json { render json: @answer.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -67,6 +75,15 @@ class AnswersController < ApplicationController
   end
 
   private
+    # 回答済みかを確認、回答済みの場合resultページへ遷移
+    def set_cookie_answered_question
+      if cookies[params[:answer][:question_id]].blank? then
+        cookies[params[:answer][:question_id]] = true
+      else
+        @is_cookies = true
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_answer
       @answer = Answer.find(params[:id])
