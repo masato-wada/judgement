@@ -16,6 +16,7 @@ class QuestionsController < ApplicationController
     check_delete_flg
     set_selects
     set_comments
+    set_flash
     @comment = Comment.new
 
     @result = Hash::new
@@ -95,7 +96,7 @@ class QuestionsController < ApplicationController
 
     respond_to do |format|
       if @question.save
-        format.html { redirect_to @question, notice: 'Question was successfully created.' }
+        format.html { redirect_to @question, notice: NoticeMessages::SUCCESS_CREATE_QUESTION }
         format.json { render :show, status: :created, location: @question }
       else
         format.html { render :new }
@@ -160,4 +161,5 @@ class QuestionsController < ApplicationController
         redirect_to controller: 'errors', action: 'error_404'
       end
     end
+
 end
