@@ -2,6 +2,7 @@ class QuestionsController < ApplicationController
   before_action :set_question, only: [:show, :result, :edit, :update, :destroy]
 
   def index
+    #@questions = Question.where(active_flg: 1, delete_flg: 0)
     @questions = Question.where(delete_flg: 0)
   end
 
@@ -82,6 +83,10 @@ class QuestionsController < ApplicationController
     4.times {
         @question.selects.build
     }
+
+    #tags情報取得
+    # @tags = Tag.where(active_flg: 1, delete_flg: 0)
+    @question.question_tags.build
   end
 
   # GET /questions/1/edit
@@ -153,7 +158,7 @@ class QuestionsController < ApplicationController
           params[:question][:selects_attributes].delete(key)
         end
       end
-      params.require(:question).permit(:title, :desc, :limit_at, :delete_flg, selects_attributes: [:id, :desc])
+      params.require(:question).permit(:title, :desc, :limit_at, :delete_flg, selects_attributes: [:id, :desc], question_tags_attributes: [:id, :tag_id])
     end
 
     def check_delete_flg

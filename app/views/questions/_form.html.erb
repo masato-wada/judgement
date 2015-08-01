@@ -7,6 +7,10 @@
   <%= f.input :limit_at, label: '投票期限' %>
   <%= error_span(@question[:limit_at]) %>
 
+  <%= f.fields_for :question_tags, @question.question_tags do |question_tag_field| %>
+    <%= question_tag_field.collection_select :tag_id, Tag.all, :id, :name, :prompt => true %>
+  <% end %>
+
   <% @question.selects.each do |select| %>
     <%= f.fields_for :selects, select do |select_field| %>
       <%= select_field.input :desc, label: '選択肢' %>
